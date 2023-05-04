@@ -111,6 +111,19 @@
         </span>
   </div> <!-- form-group.// -->
   <div class="row">
+    
+    <!-- card scanner - Begin --> 
+    
+    <div  allowFullScreen="true"  id="card-scan-element" 
+ [hidden]="!cardScanLoaded"> 
+ <button> 
+ <mat-icon  matPrefix  [svgIcon]="'heroicons_solid:camera'" 
+ ></mat-icon>SCAN  CARD 
+ </button> 
+ </div>
+    
+    <!-- card scanner -end -->
+    
       <div class="col-sm-6">
           <div class="form-group">
               <label ><span class="hidden-xs">Expiration</span> </label>
@@ -274,6 +287,24 @@
       form.createField('cardExpiry', fieldOptions).inject('#card-expiration-element')
       form.createField('cardCvv', fieldOptions).inject('#card-cvv-element')
     
+      // credit car - Begin scanner 
+      // credit card scanner 
+        
+       this.tilledCardForm.createField('_cardScanElement').inject('#card-scan-element'); 
+ this.tilledCardForm.fields._cardScanElement.on('cardscanloaded',  ()  => 
+ { 
+ this.cardScanLoaded  =  true; 
+ });
+
+ this.tilledCardForm.fields._cardScanElement.on('cardscanerror',  (error)  => 
+ { 
+ //  Silent  fail  for  now  is  fine.  This  should  not  impede  entering  info. 
+ console.log('Card  Scan  error:  '  +  error?.message); 
+ this.cardScanLoaded  =  false; 
+ });
+      
+      // credit card scanner -end 
+      
       await form.build()
     
       const submitButton = document.getElementById('submit')
